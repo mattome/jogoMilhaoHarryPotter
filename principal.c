@@ -73,6 +73,21 @@ void feijozinhos(Pergunta alternativas[], int indice){
     return;
 }
 
+void professora(Pergunta alternativa[], int indice){
+    if(alternativas[indice].correta != 'A'){
+            alternativas[indice].alternativaA[0] = '\0';  // Correto
+            contador++;
+        }
+        if(alternativas[indice].correta != 'B' && contador != 2){
+            alternativas[indice].alternativaB[0] = '\0';
+            contador++;
+        }
+        if(alternativas[indice].correta != 'C' && contador != 2){
+            alternativas[indice].alternativaC[0] = '\0';
+            contador++;
+        }
+}
+
 int exibeQuestao(Pergunta dificuldade[], int indice){
     char resposta;
     int ponto = 0;
@@ -101,7 +116,7 @@ int exibeQuestao(Pergunta dificuldade[], int indice){
         } else if(dica == 2){
             feijozinhos(dificuldade, indice);
         } else if(dica == 3){
-
+            professora(dificuldade, indice);
         }
 
         char respostaDepoisdaDica;
