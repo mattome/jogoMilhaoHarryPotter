@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
-typedef enum{MUITOFACIL, FACIL, MEDIO, DIFICIL, MUITODIFICIL}Nivel;
+
+typedef enum{MUITOFACIL = 1, FACIL, MEDIO, DIFICIL, MUITODIFICIL}Nivel;
 
 typedef enum{CHAPEU = 1, FEIJOEZINHOS, PROFESSORA}Dica;
 
@@ -18,12 +20,16 @@ typedef struct {
     Nivel nivel;
 }Pergunta;
 
-void chapeu(Pergunta alternativas){
-
+void chapeu(Pergunta alternativas[], int indice){
+    printf("\n");
+    if (alternativas[indice].correta != 'A') alternativas[indice].alternativaA[0] = '\0';
+    if (alternativas[indice].correta != 'B') alternativas[indice].alternativaB[0] = '\0';
+    if (alternativas[indice].correta != 'C') alternativas[indice].alternativaC[0] = '\0';
+    if (alternativas[indice].correta != 'D') alternativas[indice].alternativaD[0] = '\0';
 }
 
-void feijozinhos(Pergunta alternativas){
-    srand(time(NULL)); // Inicializa a semente com base no tempo atual
+void feijozinhos(Pergunta alternativas[], int indice){
+    int contador = 0;
 
     int minimo = 0;
     int maximo = 3;
@@ -34,13 +40,35 @@ void feijozinhos(Pergunta alternativas){
         printf("Esse feijão tinha sabor de vomito!(removeu nenhuma alternativa)\n");
     } else if(numero == 1){
         printf("Esse feijão tinha sabor de grama!(removeu 1 alternativa)\n");
+        if(alternativas[indice].correta != 'A'){
+            alternativas[indice].alternativaA[0] = '\0';
+            contador++;
+        }
+        if(alternativas[indice].correta != 'B'){
+            alternativas[indice].alternativaB[0] = '\0';
+            contador++;
+        }
 
     }else if(numero == 2){
         printf("Esse feijão tinha sabor de marshmallow!(removeu 2 alternativa)\n");
-
+        if(alternativas[indice].correta != 'A'){
+            alternativas[indice].alternativaA[0] = '\0';  // Correto
+            contador++;
+        }
+        if(alternativas[indice].correta != 'B' && contador != 2){
+            alternativas[indice].alternativaB[0] = '\0';
+            contador++;
+        }
+        if(alternativas[indice].correta != 'C' && contador != 2){
+            alternativas[indice].alternativaC[0] = '\0';
+            contador++;
+        }
     }else if(numero == 3){
         printf("Esse feijão tinha sabor de tutti-frutti!(removeu 3 alternativa)\n");
-
+        if (alternativas[indice].correta != 'A') alternativas[indice].alternativaA[0] = '\0';
+        if (alternativas[indice].correta != 'B') alternativas[indice].alternativaB[0] = '\0';
+        if (alternativas[indice].correta != 'C') alternativas[indice].alternativaC[0] = '\0';
+        if (alternativas[indice].correta != 'D') alternativas[indice].alternativaD[0] = '\0';
     }
     return;
 }
@@ -48,35 +76,61 @@ void feijozinhos(Pergunta alternativas){
 int exibeQuestao(Pergunta dificuldade[], int indice){
     char resposta;
     int ponto = 0;
-    printf("%s", dificuldade[indice].questao);
-    printf("%s", dificuldade[indice].alternativaA);
-    printf("%s", dificuldade[indice].alternativaB);
-    printf("%s", dificuldade[indice].alternativaC);
-    printf("%s", dificuldade[indice].alternativaD);
-        
-    printf("Dicas: Chapeu seletor, Feijõezinhos de todos os sabores, Professora Trelawney(digite 'e' se quiser dica)");
+    printf("%s\n", dificuldade[indice].enunciado);
+    printf("A) %s\n", dificuldade[indice].alternativaA);
+    printf("B) %s\n", dificuldade[indice].alternativaB);
+    printf("C) %s\n", dificuldade[indice].alternativaC);
+    printf("D) %s\n", dificuldade[indice].alternativaD);
+
+    
+    printf("Dicas: Chapeu seletor, Feijõezinhos de todos os sabores, Professora Trelawney");
+    printf("Digite sua resposta (ou 'e' para pedir dica): ");
     scanf(" %c", &resposta);
-    if(resposta == 'e'){
+    resposta = toupper(resposta); // para aceitar minúsculas
+    if(resposta == 'E'){
         int dica;
-        printf("Digite 1 para o chapeu seletor, digite 2 para o Feijõezinhos de todos os sabores, digite 3 para a professora Trelawney");
-        scanf(" %d", &dica);
+        
+        do{
+            printf("Digite 1 para o chapeu seletor, digite 2 para o Feijõezinhos de todos os sabores, digite 3 para a professora Trelawney");
+            scanf(" %d", &dica);
+        } while (dica != 1 && dica != 2 && dica != 3);
+        
 
         if(dica == 1){
-
+            chapeu(dificuldade, indice);
         } else if(dica == 2){
-            feijozinhos(dificuldade);
+            feijozinhos(dificuldade, indice);
+        } else if(dica == 3){
+
         }
+
+        char respostaDepoisdaDica;
+
+        printf("%s\n", dificuldade[indice].enunciado);
+        printf("A) %s\n", dificuldade[indice].alternativaA);
+        printf("B) %s\n", dificuldade[indice].alternativaB);
+        printf("C) %s\n", dificuldade[indice].alternativaC);
+        printf("D) %s\n", dificuldade[indice].alternativaD);
+
+        printf("Digite sua resposta: ");
+        scanf(" %c", &respostaDepoisdaDica);
+
+        if(respostaDepoisdaDica == dificuldade[indice].correta){
+            printf("Parabens Bruxo, você acertou!");
+            ponto++;
+        }
+
     }else if(resposta == dificuldade[indice].correta){
         printf("Parabens Bruxo, você acertou!");
         ponto++;
     }else {
-        print("Seu lugar não é aqui trouxa, você errou!");
+        printf("Seu lugar não é aqui trouxa, você errou!");
     }
     return ponto;
     
 }
 
-int chamaQuestao(Pergunta q[], int tamanho, int quantidadeQuestoes){
+void chamaQuestao(Pergunta q[], int tamanho, int quantidadeQuestoes){
     srand(time(NULL)); // Inicializa a semente com base no tempo atual
 
     for (int i = 0; i < quantidadeQuestoes; i++){
@@ -90,14 +144,10 @@ int chamaQuestao(Pergunta q[], int tamanho, int quantidadeQuestoes){
             exit(1);
         }
 
-        numero = NULL;
     }
-    
-        
-    
 }
 
-void classificarQ(Pergunta todas[], int total, Pergunta muitofacil[], Pergunta facil[], Pergunta medio[], Pergunta dificil[], Pergunta muitoDificil[]) {
+void classificarQ(Pergunta todas[], int total, Pergunta muitoFacil[], Pergunta facil[], Pergunta medio[], Pergunta dificil[], Pergunta muitoDificil[]) {
     int contadorMF = 0, contadorF = 0, contadorM = 0, contadorD = 0, contadorMD = 0;
 
     for (int i = 0; i < total; i++) {
@@ -136,9 +186,9 @@ int main() {
     Pergunta dificil[15];
     Pergunta muitoDificil[10];
 
-    Dica dica;
+    //Dica dica;
 
-    FILE *arquivo = fopen("perguntas.csv", "r");
+    FILE *arquivo = fopen("QuestoesHarryPotter.csv", "r");
     if (arquivo == NULL) {
         perror("Erro ao abrir o arquivo");
         return 1;
@@ -151,7 +201,7 @@ int main() {
     // Pular a primeira linha (cabeçalho)
     fgets(linha, sizeof(linha), arquivo);
 
-    while (fgets(linha, sizeof(linha), arquivo) != NULL && quantidade < 80) {
+    while (fgets(linha, sizeof(linha), arquivo) != NULL && quantidade < 91) {
         linha[strcspn(linha, "\n")] = '\0';  // Remove o '\n'
 
         char *token = strtok(linha, ";");
@@ -182,12 +232,14 @@ int main() {
 
     classificarQ(questoes, quantidade, muitoFacil, facil, medio, dificil, muitoDificil);
 
-    
-    exibeQuestao(muitoFacil, 20, 2);
-    exibeQuestao(facil, 20, 2);
-    exibeQuestao(medio, 15, 4);
-    exibeQuestao(dificil, 15, 4);
-    exibeQuestao(muitoDificil, 10, 3);
+    srand(time(NULL)); // Inicializa a semente com base no tempo atual
+
+
+    chamaQuestao(muitoFacil, 14, 2);
+    chamaQuestao(facil, 14, 2);
+    chamaQuestao(medio, 28, 4);
+    chamaQuestao(dificil, 28, 4);
+    chamaQuestao(muitoDificil, 7, 3);
     
    
     return 0;
