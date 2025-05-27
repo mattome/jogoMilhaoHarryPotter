@@ -195,9 +195,59 @@ void classificarQ(Pergunta todas[], int total, Pergunta muitoFacil[], Pergunta f
     }
 }
 
-void sistemaBusca(Pergunta questoes){
+void sistemaBusca(Pergunta questoes[], int total) {
+    int nivelEscolhido;
+    int encontrados[80]; // guarda os índices das perguntas com o nível escolhido
+    int contador = 0;
 
+    do{
+    printf("\n--- BUSCA POR NÍVEL ---\n");
+    printf("Escolha o nível de dificuldade:\n");
+    printf("1 - Muito Fácil\n");
+    printf("2 - Fácil\n");
+    printf("3 - Médio\n");
+    printf("4 - Difícil\n");
+    printf("5 - Muito Difícil\n");
+    printf("Digite o número correspondente: ");
+    scanf(" %d", &nivelEscolhido);
+    }while(nivelEscolhido != 1 || nivelEscolhido != 2 || nivelEscolhido != 3 || nivelEscolhido != 4 || nivelEscolhido != 5 ||);
+
+    // Coleta índices das perguntas com o nível escolhido
+    for (int i = 0; i < total; i++) {
+        if (questoes[i].nivel == nivelEscolhido) {
+            encontrados[contador++] = i;
+        }
+    }
+
+    if (contador == 0) {
+        printf("Nenhuma pergunta encontrada para esse nível.\n");
+        return;
+    }
+
+    int pos = 0;
+    char opcao;
+    do {
+        int idx = encontrados[pos];
+        printf("\nPergunta %d de %d\n", pos + 1, contador);
+        printf("%s\n", questoes[idx].enunciado);
+        printf("A) %s\n", questoes[idx].alternativaA);
+        printf("B) %s\n", questoes[idx].alternativaB);
+        printf("C) %s\n", questoes[idx].alternativaC);
+        printf("D) %s\n", questoes[idx].alternativaD);
+        printf("Resposta correta: %c\n", questoes[idx].correta);
+
+        printf("\nDigite 'n' para próxima, 'a' para anterior, 's' para sair: ");
+        scanf(" %c", &opcao);
+
+        if (opcao == 'n' && pos < contador - 1) {
+            pos++;
+        } else if (opcao == 'a' && pos > 0) {
+            pos--;
+        }
+
+    } while (opcao != 's');
 }
+
 
 int main() {
     Pergunta muitoFacil[20];
@@ -208,7 +258,7 @@ int main() {
 
     //Dica dica;
 
-    FILE *arquivo = fopen("QuestoesHarryPotter.CSV", "r");
+    FILE *arquivo = fopen("QuestoesHarryPotter.csv", "r");
     if (arquivo == NULL) {
         perror("Erro ao abrir o arquivo");
         return 1;
@@ -221,7 +271,7 @@ int main() {
     // Pular a primeira linha (cabeçalho)
     fgets(linha, sizeof(linha), arquivo);
 
-    while (fgets(linha, sizeof(linha), arquivo) != NULL && quantidade < 91) {
+    while (fgets(linha, sizeof(linha), arquivo) != NULL && quantidade < 80) {
         linha[strcspn(linha, "\n")] = '\0';  // Remove o '\n'
 
         char *token = strtok(linha, ";");
@@ -266,14 +316,14 @@ int main() {
     scanf(" %d", &menu);
 
     if(menu == 1){
-        chamaQuestao(muitoFacil, 14, 2);
-        chamaQuestao(facil, 14, 2);
-        chamaQuestao(medio, 28, 4);
-        chamaQuestao(dificil, 28, 4);
-        chamaQuestao(muitoDificil, 7, 3);
+        chamaQuestao(muitoFacil, 20, 2);
+        chamaQuestao(facil, 20, 2);
+        chamaQuestao(medio, 15, 4);
+        chamaQuestao(dificil, 15, 4);
+        chamaQuestao(muitoDificil, 10, 3);
         printf("Você realmente é um bruxo de puro-sangue - Você venceu\n");
     } else if(menu == 2){
-        sistemaBusca(questoes);
+        sistemaBusca(questoes, quantidade);
     } else if(menu == 3){
         exit(1);
     }
