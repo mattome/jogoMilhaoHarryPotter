@@ -210,7 +210,7 @@ void sistemaBusca(Pergunta questoes[], int total) {
     printf("5 - Muito Difícil\n");
     printf("Digite o número correspondente: ");
     scanf(" %d", &nivelEscolhido);
-    }while(nivelEscolhido != 1 || nivelEscolhido != 2 || nivelEscolhido != 3 || nivelEscolhido != 4 || nivelEscolhido != 5 ||);
+    }while(nivelEscolhido != 1 && nivelEscolhido != 2 && nivelEscolhido != 3 && nivelEscolhido != 4 && nivelEscolhido != 5);
 
     // Coleta índices das perguntas com o nível escolhido
     for (int i = 0; i < total; i++) {
@@ -307,7 +307,7 @@ int main() {
 
     printf("Jogo do milhão do Harry Potter\n\n");
     printf("MENU:\n");
-    printf("--------------------------");
+    printf("--------------------------\n");
     printf("1-Jogar\n");
     printf("2-Busca\n");
     printf("3-Sair\n");
