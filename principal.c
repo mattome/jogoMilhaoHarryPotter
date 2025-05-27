@@ -73,7 +73,8 @@ void feijozinhos(Pergunta alternativas[], int indice){
     return;
 }
 
-void professora(Pergunta alternativa[], int indice){
+void professora(Pergunta alternativas[], int indice){
+    int contador = 0;
     if(alternativas[indice].correta != 'A'){
             alternativas[indice].alternativaA[0] = '\0';  // Correto
             contador++;
@@ -194,6 +195,10 @@ void classificarQ(Pergunta todas[], int total, Pergunta muitoFacil[], Pergunta f
     }
 }
 
+void sistemaBusca(Pergunta questoes){
+
+}
+
 int main() {
     Pergunta muitoFacil[20];
     Pergunta facil[20];
@@ -203,7 +208,7 @@ int main() {
 
     //Dica dica;
 
-    FILE *arquivo = fopen("QuestoesHarryPotter.csv", "r");
+    FILE *arquivo = fopen("QuestoesHarryPotter.CSV", "r");
     if (arquivo == NULL) {
         perror("Erro ao abrir o arquivo");
         return 1;
@@ -250,12 +255,28 @@ int main() {
     srand(time(NULL)); // Inicializa a semente com base no tempo atual
 
 
-    chamaQuestao(muitoFacil, 14, 2);
-    chamaQuestao(facil, 14, 2);
-    chamaQuestao(medio, 28, 4);
-    chamaQuestao(dificil, 28, 4);
-    chamaQuestao(muitoDificil, 7, 3);
+    printf("Jogo do milhão do Harry Potter\n\n");
+    printf("MENU:\n");
+    printf("--------------------------");
+    printf("1-Jogar\n");
+    printf("2-Busca\n");
+    printf("3-Sair\n");
     
+    int menu = 0;
+    scanf(" %d", &menu);
+
+    if(menu == 1){
+        chamaQuestao(muitoFacil, 14, 2);
+        chamaQuestao(facil, 14, 2);
+        chamaQuestao(medio, 28, 4);
+        chamaQuestao(dificil, 28, 4);
+        chamaQuestao(muitoDificil, 7, 3);
+        printf("Você realmente é um bruxo de puro-sangue - Você venceu\n");
+    } else if(menu == 2){
+        sistemaBusca(questoes);
+    } else if(menu == 3){
+        exit(1);
+    }
    
     return 0;
 }
