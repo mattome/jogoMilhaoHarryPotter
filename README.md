@@ -9,6 +9,7 @@ Ideia criativa:
   -Professora Trelawney - Exclui duas alternativas incorretas
   -Feijõezinhos de todos os sabores - Gera para o jogador um feijão aleatório que pode que exclui alternativas, de 0 à 3.
 
-
-
+Instruções: 
+  -Deixar o arquivo QuestoesHarryPotter.csv na mesma pasta do principal.c
+  -Depois é só executar o código
 
