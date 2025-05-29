@@ -1,4 +1,5 @@
-Nome do jogo: HarryPotter
+Nome do jogo: Jogo do do milhão HarryPotter(nome temporario)  
+
 Nome dos membros: 
   -Matheus Tomé da Silva
   -Ralison Nogueira Trovão
